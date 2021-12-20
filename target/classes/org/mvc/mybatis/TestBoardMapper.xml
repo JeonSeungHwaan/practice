@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace = "org.mvc.mybatis.TestBoardMapper">
+	    
+	<insert id = "insertContent" parameterType = "org.mvc.bean.TestBoardDTO">
+		insert into tbl_testboard(bno, title, content, writer, pw)
+			values(seq_TestBoard.nextval, #{title}, #{content}, #{writer}, #{pw} )
+	</insert>
+	
+	<select id = "getList" resultType = "org.mvc.bean.TestBoardDTO">
+		<![CDATA[
+			select * from tbl_TestBoard where bno > 0 order by bno desc
+		]]>
+	</select>
+	
+	<select id = "getContent" resultType = "org.mvc.bean.TestBoardDTO">
+		<![CDATA[
+			select * from tbl_TestBoard where bno = #{bno}
+		]]>
+	</select>	
+	
+	<update id = "readCountUp">
+		<![CDATA[
+			update tbl_TestBoard set readcount = readcount + 1 where bno = #{bno}
+		]]>
+	</update>
+	
+	<update id = "updateContent">
+		update tbl_TestBoard set title = #{title}, content = #{content}, writer = #{writer}, updateDate = sysdate
+			where bno = #{bno}
+	</update>    
+	
+	<delete id = "deleteContent">
+		delete tbl_TestBoard where bno = #{bno}
+	</delete>
+	    
+</mapper>
