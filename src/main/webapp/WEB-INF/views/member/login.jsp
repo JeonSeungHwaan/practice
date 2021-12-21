@@ -24,7 +24,10 @@
 <h1> login.jsp </h1>
 
 <form action="/practice/member/loginPro" method="post">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
 	아이디 : <input type="text" name="id" id="id" /> <br/>
 	비밀번호 : <input type="password" name="pw" id="pw" /> <br/>
+	로그인 유지 : <input type="checkbox" name="remember-me" /> <br/>
 			<input type="submit" value="로그인" />
 </form>

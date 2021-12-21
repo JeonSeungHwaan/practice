@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="customSuccess" class="com.security.bean.CustomLoginHandler" />
+	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+	<security:http>
+	
+		<security:intercept-url pattern="/practice/member/main" access="hasRole('ROLE_MEMBER')" />
+		<security:intercept-url pattern="/practice/admin/main" access="hasRole('ROLE_ADMIN')" />
+		
+		<security:form-login login-page="/practice/member/login" authentication-success-handler-ref="customSuccess" />
+		<security:logout logout-url="/practice/member/logout" invalidate-session="true" delete-cookies="remember-me, JSESSIONID" />
+	
+		<security:remember-me data-source-ref="dataSource" token-validity-seconds="86400" />
+	
+	</security:http>	
+
+	<security:authentication-manager>
+		<security:authentication-provider>
+			
+			<security:jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query="select id, pw, enabled from tbl_testMember where id = ?"
+				authorities-by-username-query="select id,auth from tbl_testAuth where id = ?" />
+			
+			<security:password-encoder ref="bcryptPasswordEncoder" />
+			
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+</beans>

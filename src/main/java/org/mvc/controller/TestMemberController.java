@@ -87,10 +87,8 @@ public class TestMemberController {
 	}
 	
 	@RequestMapping("logout")
-	public String member_logout(HttpSession session) {
+	public String member_logout() {
 		log.info("=============/logout/=============");
-		
-		session.removeAttribute("memId");
 		return "member/logout";
 	}
 	
