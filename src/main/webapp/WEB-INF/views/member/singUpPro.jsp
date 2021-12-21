@@ -7,6 +7,6 @@
 <c:if test="${result == 1}">
 	<script>
 		alert("가입되었습니다.");
-		window.location = "/practice/member/login";
+		window.location = "/practice/security/login";
 	</script>
 </c:if>

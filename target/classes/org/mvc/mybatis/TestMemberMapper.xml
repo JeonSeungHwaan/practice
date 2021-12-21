@@ -7,8 +7,13 @@
 	    
     <insert id="signUp">
     	insert into tbl_TestMember(id, pw, name, nickname, birth)
-    		values(#{id}, #{pw}, #{name}, #{nickname}, #{birth})
+    		values(#{id}, #{pw}, #{name}, #{nickname}, #{birth})	
     </insert>
+	    
+	<insert id="userAuth">
+		insert into tbl_TestAuth(id, auth)
+    		values(#{id}, 'ROLE_MEMBER')
+	</insert>    
 	    
 	<update id="imgUpload">
 		update tbl_TestMember set img = #{img} where id = #{id}

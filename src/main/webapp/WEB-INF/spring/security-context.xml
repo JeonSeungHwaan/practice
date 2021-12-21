@@ -11,15 +11,16 @@
 	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
 	<security:http>
-	
+		<security:intercept-url pattern="/practice/member/main" access="permitAll" />
 		<security:intercept-url pattern="/practice/member/main" access="hasRole('ROLE_MEMBER')" />
 		<security:intercept-url pattern="/practice/admin/main" access="hasRole('ROLE_ADMIN')" />
 		
-		<security:form-login login-page="/practice/member/login" authentication-success-handler-ref="customSuccess" />
-		<security:logout logout-url="/practice/member/logout" invalidate-session="true" delete-cookies="remember-me, JSESSIONID" />
+		<security:form-login login-page="/security/login" authentication-success-handler-ref="customSuccess" />
+		<security:logout logout-url="/security/logout" invalidate-session="true" delete-cookies="remember-me, JSESSIONID" />
 	
 		<security:remember-me data-source-ref="dataSource" token-validity-seconds="86400" />
-	
+		
+		<security:csrf disabled="true"/>
 	</security:http>	
 
 	<security:authentication-manager>

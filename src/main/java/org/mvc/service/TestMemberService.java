@@ -7,6 +7,9 @@ public interface TestMemberService {
 	// 회원가입
 	public int insertMember(TestMemberDTO member);
 	
+	// 회원 등급 설정
+	public int insertUserAuth(TestMemberDTO member);
+	
 	// 프로필 사진 저장
 	public int insertProfileImg(TestMemberDTO member);
 	

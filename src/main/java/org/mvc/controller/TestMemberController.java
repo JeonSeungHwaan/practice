@@ -25,12 +25,18 @@ public class TestMemberController {
 
 	@Autowired
 	private TestMemberService service;
+	
 	@Autowired
 	private TestFileInfo fileInfo;
 	
 	@RequestMapping("main")
 	public String main() {
 		return "member/main";
+	}
+	
+	@RequestMapping("all")
+	public String all() {
+		return "member/all";
 	}
 	
 	@RequestMapping("singUp")
@@ -66,6 +72,8 @@ public class TestMemberController {
 			}
 		}
 		
+		service.insertUserAuth(member);
+		
 		return "member/singUpPro";
 	}
 	
@@ -87,8 +95,9 @@ public class TestMemberController {
 	}
 	
 	@RequestMapping("logout")
-	public String member_logout() {
+	public String member_logout(HttpSession session) {
 		log.info("=============/logout/=============");
+		session.invalidate();
 		return "member/logout";
 	}
 	

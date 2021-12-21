@@ -8,6 +8,9 @@ public interface TestMemberMapper {
 	// 회원가입
 	public int signUp(TestMemberDTO member);
 	
+	// 회원 등급 설정
+	public int userAuth(TestMemberDTO member);
+	
 	// 프로필 사진 저장
 	public int imgUpload(TestMemberDTO member);
 	

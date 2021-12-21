@@ -3,6 +3,7 @@ package org.mvc.service;
 import org.mvc.bean.TestMemberDTO;
 import org.mvc.mybatis.TestMemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.Setter;
@@ -15,12 +16,22 @@ public class TestMemberServiceImpl implements TestMemberService{
 	@Setter(onMethod_=@Autowired)
 	private TestMemberMapper mapper;
 	
+	@Setter(onMethod_=@Autowired)
+	private PasswordEncoder pwencoder;
+	
 	@Override
 	public int insertMember(TestMemberDTO member) {
 		log.info("========/insertMember/========");
+		member.setPw(pwencoder.encode(member.getPw()));
 		return mapper.signUp(member);
 	}
 
+	@Override
+	public int insertUserAuth(TestMemberDTO member) {
+		log.info("========/insertUserAuth/========");
+		return mapper.userAuth(member);
+	}
+	
 	@Override
 	public int insertProfileImg(TestMemberDTO member) {
 		log.info("========/insertProfileImg/========");
