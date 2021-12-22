@@ -15,4 +15,5 @@ public class TestBoardDTO {
 	private Integer readcount;
 	private Date regdate;
 	private Date updateDate;
+	private String member_id;
 }

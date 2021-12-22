@@ -2,6 +2,8 @@ package org.mvc.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.mvc.bean.TestBoardDTO;
 import org.mvc.service.TestBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +46,15 @@ public class TestBoardController {
 	@RequestMapping("writePro")
 	public String writePro(TestBoardDTO board) {
 		log.info("=============/practice/board/writePro/=============");
-		
-		service.insertContent(board);
+
 		System.out.println(board);
+		
+		if(board.getPw() != null) {
+			service.insertContent(board);
+		} else {
+			service.insertMemberContent(board);
+		}
+		
 		return "board/writePro";
 	}
 	
@@ -61,9 +69,19 @@ public class TestBoardController {
 	
 	// 하나의 게시글 출력
 	@RequestMapping("content")
-	public String content(Long bno, Model model) {
+	public String content(Long bno, Model model, HttpSession session) {
 		log.info("=============/practice/board/content?bno="+bno+"/=============");
-		model.addAttribute("testboardDTO", service.getContent(bno));
+		
+		String memId = (String)session.getAttribute("memId");
+		
+		TestBoardDTO board = service.getContent(bno);
+		model.addAttribute("testboardDTO", board);
+		
+		if(board.getWriter().equals(memId)) {
+			int result = 1;
+			model.addAttribute("result", result);
+		}
+		
 		return "board/content";
 	}
 	
@@ -79,10 +97,18 @@ public class TestBoardController {
 	public String updatePro(TestBoardDTO board, Model model) {
 		log.info("=============/practice/board/updatePro?bno="+board.getBno()+"/=============");
 		
-		String DBpw = service.getContent(board.getBno()).getPw();
+		if(board.getPw() != null) {
+			String DBpw = service.getContentPw(board.getBno());
+			if(board.getPw().equals(DBpw)) {
+				model.addAttribute("result", service.updateContent(board));
+			}
+		}
 		
-		if(board.getPw().equals(DBpw)) {
-			model.addAttribute("result", service.updateContent(board));
+		if(board.getMember_id() != null) {
+			String DBMember_id = service.getMemberId(board.getBno());
+			if(board.getMember_id().equals(DBMember_id)) {
+				model.addAttribute("result", service.updateContent(board));
+			}
 		}
 		
 		return "board/updatePro";
@@ -97,13 +123,21 @@ public class TestBoardController {
 	
 	// 게시글 삭제
 	@RequestMapping("deletePro")
-	public String deletePro(Long bno, String pw, Model model) {
-		log.info("=============/practice/board/deletePro?bno="+bno+"/=============");
+	public String deletePro(TestBoardDTO board, Model model) {
+		log.info("=============/practice/board/deletePro?bno="+board.getBno()+"/=============");
 		
-		String DBpw = service.getContent(bno).getPw();
+		if(board.getPw() != null) {
+			String DBpw = service.getContentPw(board.getBno());
+			if(board.getPw().equals(DBpw)) {
+				model.addAttribute("result", service.deleteContent(board.getBno()));
+			}
+		}
 		
-		if(pw.equals(DBpw)) {
-			model.addAttribute("result", service.deleteContent(bno));
+		if(board.getMember_id() != null) {
+			String DBMember_id = service.getMemberId(board.getBno());
+			if(board.getMember_id().equals(DBMember_id)) {
+				model.addAttribute("result", service.deleteContent(board.getBno()));
+			}
 		}
 		
 		return "board/deletePro";

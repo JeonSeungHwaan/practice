@@ -21,7 +21,7 @@ public class TestBoardServiceImpl implements TestBoardService{
 		log.info("==========getList============");
 		return mapper.getList();
 	}
-
+	
 	@Override
 	public void insertContent(TestBoardDTO board) {
 		log.info("==========insertContent============");
@@ -29,9 +29,25 @@ public class TestBoardServiceImpl implements TestBoardService{
 	}
 
 	@Override
+	public void insertMemberContent(TestBoardDTO board) {
+		log.info("==========insertMemberContent============");
+		mapper.insertMemberContent(board);
+	}
+
+	@Override
 	public TestBoardDTO getContent(Long bno) {
 		log.info("==========getContent============");
 		return mapper.getContent(bno);
+	}
+
+	@Override
+	public String getContentPw(Long bno) {
+		return mapper.getContentPw(bno);
+	}
+
+	@Override
+	public String getMemberId(Long bno) {
+		return mapper.getMemberId(bno);
 	}
 	
 	@Override

@@ -10,6 +10,11 @@
 			values(seq_TestBoard.nextval, #{title}, #{content}, #{writer}, #{pw} )
 	</insert>
 	
+	<insert id = "insertMemberContent" parameterType = "org.mvc.bean.TestBoardDTO">
+		insert into tbl_testboard(bno, title, content, writer, member_id)
+			values(seq_TestBoard.nextval, #{title}, #{content}, #{writer}, #{member_id} )
+	</insert>
+	
 	<select id = "getList" resultType = "org.mvc.bean.TestBoardDTO">
 		<![CDATA[
 			select * from tbl_TestBoard where bno > 0 order by bno desc
@@ -21,6 +26,18 @@
 			select * from tbl_TestBoard where bno = #{bno}
 		]]>
 	</select>	
+	
+	<select id = "getContentPw" resultType = "String">
+		<![CDATA[
+			select pw from tbl_TestBoard where bno = #{bno}
+		]]>
+	</select>
+	
+	<select id = "getMemberId" resultType = "String">
+		<![CDATA[
+			select member_id from tbl_TestBoard where bno = #{bno}
+		]]>
+	</select>
 	
 	<update id = "readCountUp">
 		<![CDATA[

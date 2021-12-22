@@ -19,6 +19,6 @@ public class SecurityController {
 	@RequestMapping("logout")
 	public String logout() {
 		log.info("==========/security - user logout/==========");
-		return "/security/logout";
+		return "/member/all";
 	}
 }

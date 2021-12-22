@@ -1,6 +1,7 @@
 package org.mvc.controller;
 
 import java.io.File;
+import java.security.Principal;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -9,6 +10,7 @@ import org.mvc.bean.TestFileInfo;
 import org.mvc.bean.TestMemberDTO;
 import org.mvc.service.TestMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,12 +27,18 @@ public class TestMemberController {
 
 	@Autowired
 	private TestMemberService service;
-	
 	@Autowired
 	private TestFileInfo fileInfo;
 	
 	@RequestMapping("main")
-	public String main() {
+	public String main(Principal principal, HttpSession session) {
+		log.info("=======/User Name : " + principal.getName());
+	
+		TestMemberDTO member = service.getMemberInfo(principal.getName());
+		
+		session.setAttribute("memId", member.getId());
+		session.setAttribute("nickName", member.getNickname());
+		
 		return "member/main";
 	}
 	

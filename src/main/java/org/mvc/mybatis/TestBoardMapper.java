@@ -10,7 +10,13 @@ public interface TestBoardMapper {
 	
 	public void insertContent(TestBoardDTO board);
 	
+	public void insertMemberContent(TestBoardDTO board);
+	
 	public TestBoardDTO getContent(Long bno);
+	
+	public String getContentPw(Long bno);
+	
+	public String getMemberId(Long bno);
 	
 	public void readCountUp(Long bno);
 	

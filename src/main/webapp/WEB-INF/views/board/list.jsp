@@ -15,3 +15,11 @@
 </c:forEach>
 
 <input type="button" value="글 작성" onclick="window.location='/practice/board/write'"/>
+
+<c:if  test="${sessionScope.memId != null}">
+	<input type="button" value="메인화면" onclick="window.location='/practice/member/main'"/>
+</c:if>
+
+<c:if  test="${sessionScope.memId == null}">
+	<input type="button" value="메인화면" onclick="window.location='/practice/member/all'"/>
+</c:if>
