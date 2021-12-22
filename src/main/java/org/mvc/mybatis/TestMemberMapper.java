@@ -15,7 +15,10 @@ public interface TestMemberMapper {
 	public int imgUpload(TestMemberDTO member);
 	
 	// 로그인
-	public int loginCheck(TestMemberDTO member);
+	public int loginCheck(String id);
+	
+	// 사용자 비밀번호 체크
+	public String pwCheck(String id);
 	
 	// 회원 정보 출력
 	public TestMemberDTO memberInfo(String memId);
@@ -24,7 +27,7 @@ public interface TestMemberMapper {
 	public int memberUpdate(TestMemberDTO member);
 	
 	// 회원 탈퇴
-	public int memberDelete(@Param("id")String id, @Param("pw")String pw);
+	public int memberDelete(String id);
 	
 	// 아이디 중복 체크
 	public int idCheck(String id);

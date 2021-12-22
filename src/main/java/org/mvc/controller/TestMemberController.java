@@ -11,6 +11,7 @@ import org.mvc.bean.TestMemberDTO;
 import org.mvc.service.TestMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -29,17 +31,28 @@ public class TestMemberController {
 	private TestMemberService service;
 	@Autowired
 	private TestFileInfo fileInfo;
+	@Setter(onMethod_=@Autowired)
+	private PasswordEncoder pwencoder;
 	
 	@RequestMapping("main")
 	public String main(Principal principal, HttpSession session) {
-		log.info("=======/User Name : " + principal.getName());
-	
-		TestMemberDTO member = service.getMemberInfo(principal.getName());
 		
-		session.setAttribute("memId", member.getId());
-		session.setAttribute("nickName", member.getNickname());
+		String uri = null;
 		
-		return "member/main";
+		if(principal == null) {
+			uri = "member/all";
+		} else {
+			log.info("=======/User Name : " + principal.getName());
+			
+			TestMemberDTO member = service.getMemberInfo(principal.getName());
+			
+			session.setAttribute("memId", member.getId());
+			session.setAttribute("nickName", member.getNickname());
+			
+			uri = "member/main";
+		}
+		
+		return uri;
 	}
 	
 	@RequestMapping("all")
@@ -94,11 +107,6 @@ public class TestMemberController {
 	@RequestMapping("loginPro")
 	public String loginPro(TestMemberDTO member, HttpSession session) {
 		log.info("=============/loginPro/=============");
-		if(service.memberLogin(member) == 1) {
-			String nickName = service.getMemberInfo(member.getId()).getNickname();
-			session.setAttribute("memId", member.getId());
-			session.setAttribute("nickName", nickName);
-		}
 		return "member/loginPro";
 	}
 	
@@ -119,6 +127,25 @@ public class TestMemberController {
 		return "member/userInfo";
 	} 
 	
+	@RequestMapping("pwCheck")
+	public String member_pwCheck(TestMemberDTO member, Model model) {
+		String uri;
+		
+		if(member.getPw() == null) {
+			log.info("=============/member_pwCheck : pw null/=============");
+			uri = "member/pwCheck";
+		} else {
+			log.info("=============/member_pwCheck : pw not null/=============");
+			String DBpw = service.pwCheck(member.getId());
+			if(pwencoder.matches(member.getPw(), DBpw)) {
+				model.addAttribute("result", 1);
+			}
+			uri = "member/pwCheckPro";
+		}
+		
+		return uri;
+	}
+	
 	@RequestMapping("update")
 	public String member_update(HttpSession session, Model model) {
 		log.info("=============/member_update/=============");
@@ -128,12 +155,9 @@ public class TestMemberController {
 	}
 	
 	@RequestMapping("updatePro")
-	public String member_updatePro(TestMemberDTO member, HttpSession session, HttpServletRequest request, MultipartFile save) {
+	public String member_updatePro(TestMemberDTO member, HttpServletRequest request) {
 		log.info("=============/member_updatePro/=============");
-		
-		String memId = (String)session.getAttribute("memId");
 		service.updateMemberInfo(member);
-		
 		return "member/updatePro";
 	}
 	
@@ -182,9 +206,12 @@ public class TestMemberController {
 	public String member_deletePro(String id, String pw, Model model, HttpSession session) {
 		log.info("=============/member_deletePro/=============");
 		
-		model.addAttribute("result", service.deleteMemberInfo(id, pw));
-		session.removeAttribute("memId");
-		session.removeAttribute("nickName");
+		String DBpw = service.pwCheck(id);
+		
+		if(pwencoder.matches(pw, DBpw)) {
+			model.addAttribute("result", service.deleteMemberInfo(id));
+			session.invalidate();
+		}
 		
 		return "member/deletePro";
 	}

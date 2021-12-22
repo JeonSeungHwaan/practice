@@ -31,7 +31,6 @@
 <c:if test="${sessionScope.memId != null }">
 	<form action="/practice/member/updatePro" method="post">
 		<input type="hidden" name="id" value="${memberInfo.id}" />
-		비밀번호 : <input type="password" name="pw" value="${memberInfo.pw}" id="pw" /> <br/>
 		이름 : <input type="text" name="name" value="${memberInfo.name}" id="name" /> <br/>
 		닉네임 : <input type="text" name="nickname" value="${memberInfo.nickname}" id="nickname" /> <br/>
 		<input type="submit" value="정보수정" />

@@ -20,11 +20,15 @@
 	</update>	    
 	    
 	<select id="loginCheck" resultType="Integer">
-		select count(*) from tbl_TestMember where id = #{id} and pw = #{pw} and status ! = '탈퇴'
+		select count(*) from tbl_TestMember where id = #{id} and status ! = '탈퇴'
 	</select>    
 	
 	<select id="idCheck" resultType="int">
 		select count(*) from tbl_TestMember where id = #{id}
+	</select>
+	
+	<select id="pwCheck" resultType="String">
+		select pw from tbl_TestMember where id = #{id}
 	</select>
 	
 	<select id = "memberInfo" resultType="org.mvc.bean.TestMemberDTO">
@@ -32,11 +36,11 @@
 	</select>
 	
 	<update id="memberUpdate">
-		update tbl_TestMember set pw = #{pw}, name = #{name}, nickname = #{nickname} where id = #{id}
+		update tbl_TestMember set name = #{name}, nickname = #{nickname} where id = #{id}
 	</update>
 	
 	<update id="memberDelete">
-		update tbl_TestMember set status = '탈퇴' where id = #{id} and pw = #{pw}
+		update tbl_TestMember set status = '탈퇴' where id = #{id}
 	</update>
 	    
 </mapper>

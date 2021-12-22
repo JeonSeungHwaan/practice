@@ -2,12 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<h1> deletePro.jsp </h1>
-
 <c:if test="${result == 1}">
 	<script>
-		alert("탈퇴되었습니다.");
-		window.location="/practice/security/logout";
+		window.location="/practice/member/update"
 	</script>
 </c:if>
 

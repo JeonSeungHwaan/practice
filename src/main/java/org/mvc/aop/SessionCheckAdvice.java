@@ -44,7 +44,7 @@ public class SessionCheckAdvice {
 		HttpSession session = request.getSession();
 				
 		if(session.getAttribute("memId") == null) {
-			return "member/login";
+			return "member/all";
 		}
 		
 		return jp.proceed();

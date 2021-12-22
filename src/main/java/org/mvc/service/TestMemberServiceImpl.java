@@ -39,9 +39,14 @@ public class TestMemberServiceImpl implements TestMemberService{
 	}
 
 	@Override
-	public int memberLogin(TestMemberDTO member) {
+	public int memberLogin(String id) {
 		log.info("========/memberLogin/========");
-		return mapper.loginCheck(member);
+		return mapper.loginCheck(id);
+	}
+
+	@Override
+	public String pwCheck(String id) {
+		return mapper.pwCheck(id);
 	}
 
 	@Override
@@ -57,9 +62,9 @@ public class TestMemberServiceImpl implements TestMemberService{
 	}
 
 	@Override
-	public int deleteMemberInfo(String id, String pw) {
+	public int deleteMemberInfo(String id) {
 		log.info("========/deleteMemberInfo/========");
-		return mapper.memberDelete(id, pw);
+		return mapper.memberDelete(id);
 	}
 
 	@Override

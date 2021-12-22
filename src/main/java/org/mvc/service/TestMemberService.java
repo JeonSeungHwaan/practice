@@ -14,7 +14,10 @@ public interface TestMemberService {
 	public int insertProfileImg(TestMemberDTO member);
 	
 	// 로그인
-	public int memberLogin(TestMemberDTO member);
+	public int memberLogin(String id);
+	
+	// 사용자 비밀번호 체크
+	public String pwCheck(String id);
 	
 	// 회원 정보 출력
 	public TestMemberDTO getMemberInfo(String memId);
@@ -23,7 +26,7 @@ public interface TestMemberService {
 	public int updateMemberInfo(TestMemberDTO member);
 	
 	// 회원 탈퇴
-	public int deleteMemberInfo(String id, String pw);
+	public int deleteMemberInfo(String id);
 	
 	// 아이디 중복 체크
 	public int idCheck(String id);

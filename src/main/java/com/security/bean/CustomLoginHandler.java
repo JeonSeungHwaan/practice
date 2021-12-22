@@ -24,6 +24,9 @@ public class CustomLoginHandler implements AuthenticationSuccessHandler{
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
 		
+		String id = request.getParameter("username");
+		int loginCheck = mapper.loginCheck(id);
+		
 		List<String> roleNames = new ArrayList<String>();
 		
 		authentication.getAuthorities().forEach(authority ->{
@@ -31,19 +34,22 @@ public class CustomLoginHandler implements AuthenticationSuccessHandler{
 			System.out.println("=========role.authority==="+authority.getAuthority());
 		});
 		
-		if(roleNames.contains("ROLE_ADMIN")) {
-			response.sendRedirect("/practice/admin/main");
-			return ;
+		if(loginCheck == 1) {
+			if(roleNames.contains("ROLE_ADMIN")) {
+				response.sendRedirect("/practice/admin/main");
+				return ;
+			}
+			
+			if(roleNames.contains("ROLE_MEMBER")) {
+				response.sendRedirect("/practice/member/main");
+				return ;
+			}
+			
+			response.sendRedirect("/practice/member/all");
+		} else {
+			response.sendRedirect("/practice/member/loginPro");
 		}
-		
-		if(roleNames.contains("ROLE_MEMBER")) {
-			response.sendRedirect("/practice/member/main");
-			return ;
-		}
-		
-		response.sendRedirect("/practice/member/all");
 		
 	}
-	
 	
 }
